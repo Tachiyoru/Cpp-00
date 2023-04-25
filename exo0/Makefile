@@ -5,11 +5,11 @@ RED			=	\033[1;31m
 DEFAULT		=	\033[0m
 
 OBJ_DIR		=	objs
-SRC_DIR		=	$(shell find srcs -type d)
+SRC_DIR		=	$(shell find . -type d)
 
 vpath %.cpp $(foreach dir, $(SRC_DIR), $(dir):)
 
-SRCS		=
+SRCS		 =	megaphone.cpp
 
 OBJS		=	$(SRCS:%.cpp=${OBJ_DIR}/%.o)
 
@@ -21,24 +21,24 @@ CFLAGS		=	-Werror -Wall -Wextra -std=c++98 -g3
 
 all:	${NAME}
 
-$(NAME):
-		${CC} ${CFLAGS} ${SRCS} -o ${NAME}
-		@echo "$(GREEN)##### cub3d compiling finished! #####$(DEFAULT)"
+$(NAME): ${OBJS}
+		@${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+		@echo "$(GREEN)##### megaphone compiling finished! #####$(DEFAULT)"
 
 $(OBJ_DIR)/%.o: %.cpp | $(OBJ_DIR)
-		$(CC) $(CFLAGS) -c $< -o $@
+		@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR) :
-		mkdir -p $@
+		@mkdir -p $@
 
 clean:
-		${RM} $(OBJ_DIR)
+		@${RM} $(OBJ_DIR)
 
-fclean:        clean
-		${RM} ${NAME}
+fclean:		clean
+		@${RM} ${NAME}
 		@echo "\n${GREEN}Everything cleaned${DEFAULT}"
 
-re:            fclean
-		$(MAKE) all -j
+re:			fclean
+		@$(MAKE) all -j
 
-.PHONY:        all clean fclean re
+.PHONY:		all clean fclean re
