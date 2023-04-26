@@ -9,7 +9,12 @@ SRC_DIR		=	$(shell find . -type d)
 
 vpath %.cpp $(foreach dir, $(SRC_DIR), $(dir):)
 
-SRCS		 =	main.cpp
+HEADER		=	Phonebook.hpp \
+				Contact.hpp
+
+SRCS		 =	main.cpp		\
+				Contact.cpp		\
+				Phonebook.cpp
 
 OBJS		=	$(SRCS:%.cpp=${OBJ_DIR}/%.o)
 
@@ -21,11 +26,11 @@ CFLAGS		=	-Werror -Wall -Wextra -std=c++98 -g3
 
 all:	${NAME}
 
-$(NAME): ${OBJS}
+$(NAME): ${OBJS} ${HEADER}
 		@${CC} ${CFLAGS} ${OBJS} -o ${NAME}
 		@echo "$(GREEN)##### PhoneBook compiling finished! #####$(DEFAULT)"
 
-$(OBJ_DIR)/%.o: %.cpp | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: %.cpp ${HEADER} | $(OBJ_DIR)
 		@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR) :
